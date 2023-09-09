@@ -7,7 +7,6 @@ export const TodoProvider = (props) => {
 
   useEffect(() => {
     const getTodos = JSON.parse(localStorage.getItem("todos"));
-    console.log(getTodos);
     setTodos(getTodos);
   }, []);
 

@@ -1,8 +1,11 @@
 import { useContext } from "react";
 import { TodoContext } from "../context/TodoContext";
+import { useNavigate } from "react-router-dom";
 
 export const TaskList = () => {
   const [todos, setTodos] = useContext(TodoContext);
+  const navigate = useNavigate();
+
 
   const deleteTodo = (e) => {
     e.preventDefault();
@@ -16,18 +19,45 @@ export const TaskList = () => {
     setTodos(filteredTodo);
   };
 
+  const completeTodo = ( e ) => {
+    const idCapture = parseInt(e.target.id)
+
+    const filterTodos = todos.map( ( item ) => {
+        if ( item.id === idCapture ) {
+            item.completed = false;
+            if ( e.target.checked ) {
+                item.completed = true;
+            }
+        }
+        return item;
+    } );
+
+    setTodos( filterTodos );
+}
+
+  const redirectTodo = (e) =>{
+    e.preventDefault();
+    const idCapture = parseInt(e.target.id)
+
+    navigate(`/detalle/${idCapture}`, {
+      replace: true,
+    });
+
+  }
+
   return 1 <= todos.length ? (
     todos.map((item) => {
+      const isCompleted = item.completed ? 'checked' : '';
       return (
         <>
           <div className="contenedor mt-3 max-width">
             <div className="form-check ">
               <input
-                key={item.id}
+                id={item.id}
                 className="form-check-input"
                 type="checkbox"
-                value=""
-                id="flexCheckDefault"
+                checked={item.completed}
+                onChange={ e => completeTodo( e ) }
               />
               <label className="form-check-label" for="flexCheckDefault">
                 {item.title}
@@ -39,6 +69,13 @@ export const TaskList = () => {
               className="btn btn-danger"
             >
               Eliminar Tarea
+            </button>
+            <button
+              id={item.id}
+              onClick={(e) => redirectTodo(e)}
+              className="btn btn-secondary"
+            >
+              Detalle Tarea
             </button>
           </div>
         </>
