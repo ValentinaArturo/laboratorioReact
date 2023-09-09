@@ -47,7 +47,6 @@ export const TaskList = () => {
 
   return 1 <= todos.length ? (
     todos.map((item) => {
-      const isCompleted = item.completed ? 'checked' : '';
       return (
         <>
           <div className="contenedor mt-3 max-width">
