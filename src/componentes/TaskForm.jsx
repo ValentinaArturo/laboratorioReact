@@ -15,10 +15,6 @@ export default function TaskForm() {
     reset();
   };
 
-  useEffect( () => {
-    localStorage.setItem( 'todos', JSON.stringify( todos ) );
-}, [todos] );
-
   return (
     <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
       <input className="form-control" {...register("task")} placeholder="Agregar nueva tarea" />

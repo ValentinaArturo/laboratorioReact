@@ -1,14 +1,23 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 
 export const TodoContext = createContext();
 
-export const TodoProvider = ( props ) => {
-    const getTodos = JSON.parse(localStorage.getItem("todos")) || [];
-    const [ todos, setTodos ] = useState([]);
+export const TodoProvider = (props) => {
+  const [todos, setTodos] = useState([]);
 
-    return (
-        <TodoContext.Provider value={[ todos, setTodos ]}>
-            { props.children }
-        </TodoContext.Provider>
-    );
-}
+  useEffect(() => {
+    const getTodos = JSON.parse(localStorage.getItem("todos"));
+    console.log(getTodos);
+    setTodos(getTodos);
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("todos", JSON.stringify(todos));
+  }, [todos]);
+
+  return (
+    <TodoContext.Provider value={[todos, setTodos]}>
+      {props.children}
+    </TodoContext.Provider>
+  );
+};
